@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test Notifikasi</title>
+    </head>
+    <body>
+        <form id="form_notifikasi">
+            <table>
+                <tr>
+                    <td>Topik</td>
+                    <td>:</td>
+                    <td>
+                        <select name="topic" id="topic">
+                            <option value="tan/promo/general">Notifikasi Event</option>
+                            <option value="tan/event/general">Notifikasi Promo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>:</td>
+                    <td>
+                        <input type="text" name="title" id="title" placeholder="Judul Notifikasi" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Content</td>
+                    <td>:</td>
+                    <td>
+                        <textarea name="content" id="content" placeholder="Pesan / Informasi" required></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        <button type="submit" name="kirim">Kirim Notifikasi</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="./js/laurensius_mqtt.js"></script>
+        <script>
+            $("#form_notifikasi").submit(function(e) {
+                e.preventDefault(); 
+                var form = $(this);
+                var url = form.attr('action');
+                var jsonMQTTMessage = {
+                    title : $("#title").val(),
+                    content : $("#content").val()
+                }
+                console.log(jsonMQTTMessage);
+                kirimNotifikasi($("#topic").val(), JSON.stringify(jsonMQTTMessage));               
+            });
+
+            function kirimNotifikasi(strTopic,strMessage){
+                message = new Paho.MQTT.Message(strMessage);
+                message.destinationName = strTopic;
+                client.send(message);
+            }
+        </script>
+            
+    </body>
+</html>
