@@ -1,12 +1,12 @@
-var client = new Paho.MQTT.Client("localhost", Number(9001), "header");
+var client = new Paho.MQTT.Client("MQTT_HOST_BROKER", Number(9001), "RANDOM_ID");
 
 client.onConnectionLost = onConnectionLost;
 client.onMessageArrived = onMessageArrived;
 
 client.connect({
     onSuccess: onConnect,
-    userName : "renzcybermedia",
-    password : "8cadb11f56"
+    userName : "MQTT_USER",
+    password : "MQTT_PASS"
 });
 
 function onConnect() {
